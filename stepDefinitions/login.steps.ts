@@ -1,20 +1,5 @@
-import { Given, When, Then, Before, After } from '@cucumber/cucumber';
-import { chromium, Browser, Page } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-
-let browser: Browser;
-let page: Page;
-let loginPage: LoginPage;
-
-Before(async function () {
-    browser = await chromium.launch({ headless: false });
-    page = await browser.newPage();
-    loginPage = new LoginPage(page);
-});
-
-After(async function () {
-    await browser.close();
-});
+import { Given, When, Then } from '@cucumber/cucumber';
+import { page, loginPage } from '../hooks/hooks';
 
 Given('I am on the SauceDemo login page', async function () {
     await loginPage.navigateToLoginPage();
