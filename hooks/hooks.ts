@@ -1,17 +1,38 @@
-import { Before, After } from '@cucumber/cucumber';
+import { Before, After, Status, setWorldConstructor } from '@cucumber/cucumber';
 import { chromium, Browser, Page } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 
-export let browser: Browser;
-export let page: Page;
-export let loginPage: LoginPage;
+export class CustomWorld {
+    browser!: Browser;
+    page!: Page;
+    loginPage!: LoginPage;
+
+    async init() {
+        this.browser = await chromium.launch({
+            headless: process.env.CI === 'true'
+        });
+
+        this.page = await this.browser.newPage();
+        this.loginPage = new LoginPage(this.page);
+    }
+}
+
+setWorldConstructor(CustomWorld);
 
 Before(async function () {
-    browser = await chromium.launch({ headless: false });
-    page = await browser.newPage();
-    loginPage = new LoginPage(page);
+    await this.init();
 });
 
-After(async function () {
-    await browser.close();
+After(async function (scenario) {
+    if (scenario.result?.status === Status.FAILED && this.page) {
+        const screenshot = await this.page.screenshot({
+            fullPage: true
+        });
+
+        await this.attach(screenshot, 'image/png');
+    }
+
+    if (this.browser) {
+        await this.browser.close();
+    }
 });

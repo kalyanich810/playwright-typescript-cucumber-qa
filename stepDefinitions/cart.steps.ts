@@ -1,31 +1,45 @@
 import { When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { page } from '../hooks/hooks';
+import { CustomWorld } from '../hooks/hooks';
 import { ProductsPage } from '../pages/ProductsPage';
 import { CartPage } from '../pages/CartPage';
 
 let productsPage: ProductsPage;
 let cartPage: CartPage;
 
-When('I open the shopping cart', async function () {
-    productsPage = new ProductsPage(page);
-    await productsPage.openCart();
+When(
+    'I open the shopping cart',
+    async function (this: CustomWorld) {
+        productsPage = new ProductsPage(this.page);
 
-    cartPage = new CartPage(page);
-});
+        await productsPage.openCart();
 
-Then('the cart should contain {string}', async function (productName: string) {
-    const isProductPresent = await cartPage.isProductInCart(productName);
+        cartPage = new CartPage(this.page);
+    }
+);
 
-    expect(isProductPresent).toBe(true);
-});
+Then(
+    'the cart should contain {string}',
+    async function (productName: string) {
+        const isProductPresent =
+            await cartPage.isProductInCart(productName);
 
-When('I remove {string} from the cart', async function (productName: string) {
-    await cartPage.removeProduct(productName);
-});
+        expect(isProductPresent).toBe(true);
+    }
+);
 
-Then('the cart should be empty', async function () {
-    const itemCount = await cartPage.getCartItemCount();
+When(
+    'I remove {string} from the cart',
+    async function (productName: string) {
+        await cartPage.removeProduct(productName);
+    }
+);
 
-    expect(itemCount).toBe(0);
-});
+Then(
+    'the cart should be empty',
+    async function () {
+        const itemCount = await cartPage.getCartItemCount();
+
+        expect(itemCount).toBe(0);
+    }
+);

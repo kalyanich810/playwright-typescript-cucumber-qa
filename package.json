@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "cucumber": "cucumber-js --require-module ts-node/register --require \"stepDefinitions/**/*.ts\" \"features/**/*.feature\"",
-    "cucumber:report": "cucumber-js --require-module ts-node/register --require \"stepDefinitions/**/*.ts\" --format html:reports/cucumber-report.html \"features/**/*.feature\""
+    "cucumber": "cucumber-js --require-module ts-node/register --require \"hooks/**/*.ts\" --require \"stepDefinitions/**/*.ts\" \"features/**/*.feature\"",
+  "cucumber:report": "cucumber-js --require-module ts-node/register --require \"hooks/**/*.ts\" --require \"stepDefinitions/**/*.ts\" --format html:reports/cucumber-report.html \"features/**/*.feature\""
   },
   "keywords": [],
   "license": "ISC",
