@@ -28,4 +28,8 @@ export class LoginPage {
     async clickLogin() {
         await this.loginButton.click();
     }
+
+    async getLoginErrorMessage(): Promise<string> {
+        return await this.page.locator('[data-test="error"]').innerText();
+    }
 }
