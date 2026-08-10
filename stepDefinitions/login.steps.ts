@@ -1,14 +1,16 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { page, loginPage } from '../hooks/hooks';
+import { loadEnvironment } from '../utils/env';
+const env = loadEnvironment();
 
 Given('I am on the SauceDemo login page', async function () {
-    await loginPage.navigateToLoginPage();
+    await loginPage.navigateToLoginPage(env.BASE_URL);
 });
 
 When('I enter valid login credentials', async function () {
-    await loginPage.enterUsername('standard_user');
-    await loginPage.enterPassword('secret_sauce');
+    await loginPage.enterUsername(env.USERNAME);
+    await loginPage.enterPassword(env.PASSWORD);
 });
 
 When(
