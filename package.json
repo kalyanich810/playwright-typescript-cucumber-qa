@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "cucumber": "cucumber-js --require-module ts-node/register --require \"stepDefinitions/**/*.ts\" \"features/**/*.feature\"",
+    "cucumber:report": "cucumber-js --require-module ts-node/register --require \"stepDefinitions/**/*.ts\" --format html:reports/cucumber-report.html \"features/**/*.feature\""
+  },
   "keywords": [],
   "license": "ISC",
   "type": "commonjs",
@@ -12,9 +16,6 @@
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.1",
     "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
-  },
-  "directories": {
-    "test": "tests"
+    "typescript": "^5.9.3"
   }
 }
